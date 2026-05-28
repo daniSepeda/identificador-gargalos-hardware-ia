@@ -2,16 +2,12 @@
 
 Projeto final destinado à disciplina de **Inteligência Artificial**, ministrada pelo Professor **Adolfo Colares**, na **Universidade Federal do Amapá (UNIFAP)**, no semestre **2026.1**.
 
----
-
 ## 👥 Componentes do Grupo
 
 - Daniela Sepeda
 - Geovanni Rodrigues
 - Maria Fernanda Fernandes
 - Miguel Peres
-
----
 
 ## 🎯 Objetivo do Projeto
 
