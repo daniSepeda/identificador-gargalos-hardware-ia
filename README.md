@@ -19,5 +19,5 @@ O projeto utilizará uma base de casos históricos com exemplos de computadores,
 
 ## 📁 Entregas
 
-- `docs/Proposta-IA.pdf`: proposta inicial de 1 página para a disciplina.
+- `docs/Proposta-IA.pdf`: proposta inicial de 1 página.
 - `docs/proposta.md`: versão editável da proposta.
