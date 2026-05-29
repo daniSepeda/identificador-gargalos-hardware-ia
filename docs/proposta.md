@@ -25,6 +25,16 @@ O RBC é uma abordagem de inteligencia artificial que busca resolver novos probl
 3. **Revise:** O sistema, depois de aplicar a solução, monitora a máquina para analisar se ela está funcionando corretamente e se o problema foi devidamente sanado.
 4. **Retain:** O sistema salva a solução aplicada para caso uma máquina tenha um problema semelhante no futuro, aprendendo e aprimorando a cada resolução.
 
+## 3.2 Sobre o algoritmo KNN (K-Nearest Neighbors)
+Para fazer a etapa de *Retrieve* (Recuperação) do RBC funcionar na prática, o projeto vai utilizar o algoritmo KNN (K-Nearest Neighbors). A ideia é usar esse modelo de aprendizado supervisionado para calcular o nível de similaridade entre os computadores. Basicamente, ele avalia um problema novo olhando para os registros que estão matematicamente mais próximos dele no nosso histórico.
+
+O funcionamento do KNN para gerar as recomendações vai seguir esta lógica:
+
+- **Conversão dos dados:** As características da máquina (como quantidade de memória RAM e tipo de armazenamento) e os sintomas que o usuário relatar são transformados em números para o sistema conseguir ler.
+- **Cálculo da distância:** Quando entra um caso novo, o algoritmo faz um cálculo matemático (como a distância Euclidiana, por exemplo) para medir o "espaço" entre o perfil desse computador atual e os casos que já estão na base.
+- **Encontrando os vizinhos (K):** Em seguida, o sistema filtra os "K" registros que tiveram a menor distância. Esse valor de "K" é simplesmente a quantidade de máquinas semelhantes que queremos analisar de uma vez (por exemplo, puxar os 3 ou 5 computadores que apresentaram o cenário mais parecido).
+- **Definição do upgrade:** Olhando para esses vizinhos mais próximos, o sistema verifica qual solução se repetiu mais. Se na maioria desses casos parecidos o gargalo foi resolvido colocando um SSD NVMe, essa será a recomendação final adaptada para o usuário.
+
 ## 4. Resultado esperado
 
 Espera-se entregar um protótipo em Google Colab capaz de receber dados de uma máquina ou cenário de uso, comparar com a base de casos históricos e retornar uma recomendação justificada de upgrade. O resultado deve indicar o provável gargalo, sugerir o componente mais adequado e explicar quais casos semelhantes sustentaram a recomendação, tornando o processo mais claro para usuários e técnicos.
