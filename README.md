@@ -32,9 +32,15 @@ O projeto utilizará uma base de casos históricos com exemplos de computadores,
 
 ## ▶️ Como executar
 
+### Google Colab (recomendado — sem instalar nada)
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/daniSepeda/identificador-gargalos-hardware-ia/blob/main/notebooks/checkpoint_experimentos.ipynb)
+
+Clique no badge acima e, no Colab, use **Ambiente de execução → Executar tudo**. O notebook baixa a base de casos automaticamente do GitHub.
+
+### Localmente
+
 ```bash
 pip install -r requirements.txt
 jupyter notebook notebooks/checkpoint_experimentos.ipynb
 ```
-
-O notebook também pode ser aberto diretamente no **Google Colab** (fazer upload de `data/base_casos.csv` ou ajustar o caminho do CSV).
