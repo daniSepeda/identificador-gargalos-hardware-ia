@@ -1,0 +1,41 @@
+id_caso,tipo_maquina,cpu_geracao,nucleos_cpu,ram_gb,tipo_armazenamento,gpu,perfil_uso,sintoma_principal,uso_cpu_pct,uso_ram_pct,uso_disco_pct,gargalo,solucao_recomendada
+1,notebook,antiga,2,4,HDD,integrada,escritorio,boot_lento,35,70,100,armazenamento,instalar SSD SATA
+2,notebook,antiga,2,4,HDD,integrada,estudo,travamento_multitarefa,40,95,90,ram,aumentar RAM para 8GB
+3,desktop,intermediaria,4,8,HDD,integrada,escritorio,boot_lento,30,60,100,armazenamento,instalar SSD NVMe
+4,desktop,intermediaria,4,8,SSD_SATA,dedicada_baixa,jogos,fps_baixo,55,65,40,gpu,trocar por GPU dedicada intermediaria
+5,desktop,recente,6,16,SSD_NVMe,dedicada_baixa,jogos,fps_baixo,50,55,30,gpu,trocar por GPU dedicada de alto desempenho
+6,notebook,intermediaria,4,8,SSD_SATA,integrada,programacao,lentidao_programas_pesados,90,80,45,cpu,migrar para CPU de geracao recente
+7,desktop,antiga,4,8,HDD,dedicada_media,jogos,carregamento_lento_jogos,45,60,100,armazenamento,instalar SSD NVMe
+8,notebook,recente,8,8,SSD_NVMe,integrada,edicao_video,travamento_multitarefa,70,97,50,ram,aumentar RAM para 16GB
+9,desktop,recente,8,16,SSD_NVMe,dedicada_media,edicao_video,render_lento,95,70,40,cpu,migrar para CPU com mais nucleos
+10,notebook,antiga,2,4,HDD,integrada,escritorio,lentidao_geral,60,90,100,armazenamento,instalar SSD SATA e avaliar RAM
+11,desktop,intermediaria,4,8,SSD_SATA,integrada,jogos,fps_baixo,60,70,35,gpu,adicionar GPU dedicada de entrada
+12,notebook,intermediaria,4,8,HDD,integrada,estudo,boot_lento,30,65,100,armazenamento,instalar SSD SATA
+13,desktop,recente,6,16,SSD_NVMe,dedicada_alta,jogos,fps_baixo,92,60,30,cpu,migrar para CPU de geracao recente
+14,notebook,recente,6,16,SSD_NVMe,dedicada_media,edicao_video,falta_espaco,50,60,95,armazenamento,adicionar SSD NVMe de maior capacidade
+15,desktop,antiga,2,4,HDD,integrada,escritorio,travamento_multitarefa,50,96,85,ram,aumentar RAM para 8GB
+16,notebook,intermediaria,4,12,SSD_SATA,integrada,programacao,lentidao_programas_pesados,88,75,40,cpu,migrar para maquina com CPU superior
+17,desktop,intermediaria,6,16,SSD_SATA,dedicada_baixa,edicao_video,render_lento,75,70,45,gpu,trocar por GPU com mais VRAM
+18,notebook,antiga,2,6,HDD,integrada,estudo,lentidao_geral,55,85,100,armazenamento,instalar SSD SATA
+19,desktop,recente,8,32,SSD_NVMe,dedicada_alta,edicao_video,falta_espaco,60,55,97,armazenamento,adicionar HD/SSD secundario de alta capacidade
+20,notebook,intermediaria,4,8,SSD_SATA,integrada,escritorio,travamento_multitarefa,45,94,55,ram,aumentar RAM para 16GB
+21,desktop,antiga,4,8,HDD,dedicada_baixa,jogos,fps_baixo,65,70,80,gpu,trocar por GPU dedicada intermediaria
+22,notebook,recente,8,16,SSD_NVMe,integrada,jogos,fps_baixo,55,60,30,gpu,usar GPU externa ou migrar para notebook gamer
+23,desktop,intermediaria,4,8,HDD,integrada,programacao,boot_lento,40,70,100,armazenamento,instalar SSD NVMe
+24,notebook,antiga,2,4,SSD_SATA,integrada,escritorio,travamento_multitarefa,50,97,60,ram,aumentar RAM para 8GB
+25,desktop,recente,6,16,SSD_NVMe,dedicada_media,jogos,fps_baixo,50,55,25,gpu,trocar por GPU dedicada de alto desempenho
+26,notebook,intermediaria,4,8,HDD,integrada,edicao_video,render_lento,85,80,90,cpu,migrar para CPU recente e instalar SSD
+27,desktop,antiga,2,4,HDD,integrada,estudo,lentidao_geral,60,92,95,ram,aumentar RAM e instalar SSD
+28,notebook,recente,6,16,SSD_NVMe,dedicada_media,programacao,lentidao_programas_pesados,93,70,35,cpu,migrar para CPU com mais nucleos
+29,desktop,intermediaria,6,16,SSD_SATA,dedicada_media,edicao_video,falta_espaco,55,65,96,armazenamento,adicionar SSD de maior capacidade
+30,notebook,antiga,4,8,HDD,integrada,jogos,carregamento_lento_jogos,50,65,100,armazenamento,instalar SSD SATA
+31,desktop,recente,8,16,SSD_NVMe,dedicada_baixa,edicao_video,render_lento,70,65,40,gpu,trocar por GPU com mais VRAM
+32,notebook,intermediaria,4,4,SSD_SATA,integrada,estudo,travamento_multitarefa,45,95,50,ram,aumentar RAM para 8GB
+33,desktop,antiga,4,8,HDD,integrada,escritorio,boot_lento,35,60,100,armazenamento,instalar SSD SATA
+34,notebook,recente,8,32,SSD_NVMe,dedicada_alta,edicao_video,render_lento,96,65,35,cpu,migrar para workstation com CPU superior
+35,desktop,intermediaria,4,8,SSD_SATA,dedicada_baixa,jogos,fps_baixo,60,65,30,gpu,trocar por GPU dedicada intermediaria
+36,notebook,antiga,2,4,HDD,integrada,escritorio,lentidao_geral,55,88,100,armazenamento,instalar SSD SATA e avaliar RAM
+37,desktop,recente,6,8,SSD_NVMe,dedicada_media,programacao,travamento_multitarefa,60,96,40,ram,aumentar RAM para 32GB
+38,notebook,intermediaria,4,8,HDD,integrada,programacao,boot_lento,35,70,100,armazenamento,instalar SSD NVMe
+39,desktop,antiga,2,6,HDD,integrada,estudo,travamento_multitarefa,50,93,90,ram,aumentar RAM para 8GB
+40,notebook,recente,6,16,SSD_NVMe,dedicada_baixa,jogos,fps_baixo,55,60,25,gpu,trocar por notebook com GPU superior
