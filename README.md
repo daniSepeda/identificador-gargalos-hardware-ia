@@ -26,13 +26,13 @@ O projeto utiliza uma base de casos históricos com exemplos de computadores, si
 
 ### Entrega 2 — Checkpoint (18/06)
 
-- `data/base_casos.csv`: primeira base de casos (40 casos com foco em uso doméstico/gamer), mantida no repositório como registro histórico.
+- Primeira base de casos: 40 casos com foco em uso doméstico/gamer, **substituída pela base corporativa na Entrega 3** (o histórico completo da migração está no `CHANGELOG.md`).
 - Primeiros experimentos com as etapas *Retrieve* e *Reuse* e validação leave-one-out (acurácia de 80% com k=3).
 
 ### Entrega 3 — Final (09/07)
 
 - `docs/PRD_base_casos_corporativa.md`: PRD que repriorizou o escopo do projeto para **ambientes corporativos**.
-- `data/base_casos_corporativa_v1.csv`: **nova base oficial** — 80 casos corporativos, balanceados em 20 casos por classe de gargalo (cpu, ram, gpu, armazenamento). Substitui a `base_casos.csv` como base usada pelo notebook.
+- `data/base_casos_corporativa_v1.csv`: **nova base oficial** — 80 casos corporativos, balanceados em 20 casos por classe de gargalo (cpu, ram, gpu, armazenamento). Substitui a antiga base doméstica/gamer da Entrega 2 como base usada pelo notebook.
 - `notebooks/checkpoint_experimentos.ipynb`: notebook atualizado para a base corporativa, com validação de domínios (correção do bug de categoria não vista), métricas por classe e análise dos erros.
 - `CHANGELOG.md`: diferenças detalhadas entre a base corporativa e a base original.
 - Resultado: **acurácia leave-one-out de 80% com k=3** (mesmo baseline da Entrega 2, agora com o dobro de casos e classes perfeitamente balanceadas).
