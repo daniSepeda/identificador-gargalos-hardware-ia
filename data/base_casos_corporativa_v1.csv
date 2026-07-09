@@ -1,0 +1,81 @@
+id_caso,tipo_maquina,cpu_geracao,nucleos_cpu,ram_gb,tipo_armazenamento,gpu,perfil_carga,sintoma_principal,uso_cpu_pct,uso_ram_pct,uso_disco_pct,gargalo,solucao_recomendada
+1,desktop_escritorio,antiga,2,4,HDD,integrada,ofimatica_administrativa,boot_lento,30,65,100,armazenamento,instalar SSD SATA
+2,notebook_corporativo,antiga,2,4,HDD,integrada,ofimatica_administrativa,boot_lento,35,70,100,armazenamento,instalar SSD SATA
+3,desktop_escritorio,intermediaria,4,8,HDD,integrada,ofimatica_administrativa,boot_lento,28,60,95,armazenamento,instalar SSD NVMe
+4,notebook_corporativo,antiga,2,4,HDD,integrada,ofimatica_administrativa,lentidao_geral,45,75,100,armazenamento,instalar SSD SATA e avaliar RAM
+5,desktop_escritorio,intermediaria,4,8,SSD_SATA,integrada,ofimatica_administrativa,falta_espaco,30,55,96,armazenamento,adicionar SSD de maior capacidade
+6,servidor,intermediaria,8,32,HDD,integrada,banco_de_dados,consulta_bd_lenta,45,70,98,armazenamento,migrar banco para SSD NVMe
+7,servidor,recente,16,64,HDD,integrada,banco_de_dados,consulta_bd_lenta,40,65,100,armazenamento,migrar banco para SSD NVMe
+8,maquina_virtual,intermediaria,4,16,HDD,integrada,banco_de_dados,consulta_bd_lenta,50,72,97,armazenamento,mover VM para datastore SSD
+9,servidor,antiga,8,32,HDD,integrada,banco_de_dados,consulta_bd_lenta,55,75,99,armazenamento,migrar banco para SSD NVMe
+10,servidor,intermediaria,8,32,SSD_SATA,integrada,banco_de_dados,falta_espaco,35,60,97,armazenamento,adicionar SSD de maior capacidade
+11,desktop_escritorio,antiga,2,4,HDD,integrada,atendimento_cliente,boot_lento,32,68,100,armazenamento,instalar SSD SATA
+12,desktop_escritorio,antiga,4,8,HDD,integrada,atendimento_cliente,boot_lento,30,62,98,armazenamento,instalar SSD SATA
+13,desktop_escritorio,intermediaria,4,8,HDD,integrada,atendimento_cliente,lentidao_geral,48,78,95,armazenamento,instalar SSD SATA
+14,desktop_escritorio,intermediaria,4,8,HDD,integrada,financeiro_erp,relatorio_erp_lento,50,70,96,armazenamento,instalar SSD NVMe
+15,notebook_corporativo,antiga,2,8,HDD,integrada,financeiro_erp,relatorio_erp_lento,45,72,98,armazenamento,instalar SSD SATA
+16,desktop_escritorio,antiga,4,8,HDD,integrada,financeiro_erp,boot_lento,33,64,100,armazenamento,instalar SSD SATA
+17,estacao_trabalho,recente,8,32,SSD_SATA,dedicada_media,design_grafico_marketing,falta_espaco,50,60,97,armazenamento,adicionar SSD NVMe de maior capacidade
+18,notebook_corporativo,intermediaria,4,16,SSD_SATA,dedicada_baixa,design_grafico_marketing,falta_espaco,45,58,95,armazenamento,adicionar SSD externo de alta capacidade
+19,notebook_corporativo,intermediaria,4,8,HDD,integrada,desenvolvimento_software,boot_lento,38,72,97,armazenamento,instalar SSD NVMe
+20,estacao_trabalho,recente,8,32,SSD_SATA,dedicada_baixa,desenvolvimento_software,falta_espaco,40,55,96,armazenamento,adicionar SSD de maior capacidade
+21,desktop_escritorio,antiga,2,4,HDD,integrada,ofimatica_administrativa,travamento_multitarefa,45,96,80,ram,aumentar RAM para 8GB
+22,notebook_corporativo,antiga,2,4,SSD_SATA,integrada,ofimatica_administrativa,travamento_multitarefa,40,95,55,ram,aumentar RAM para 8GB
+23,notebook_corporativo,intermediaria,4,4,SSD_SATA,integrada,ofimatica_administrativa,travamento_multitarefa,42,97,50,ram,aumentar RAM para 8GB
+24,desktop_escritorio,intermediaria,4,8,SSD_SATA,integrada,ofimatica_administrativa,travamento_multitarefa,48,94,58,ram,aumentar RAM para 16GB
+25,desktop_escritorio,antiga,4,4,HDD,integrada,atendimento_cliente,travamento_multitarefa,50,97,82,ram,aumentar RAM para 8GB
+26,desktop_escritorio,intermediaria,4,8,SSD_SATA,integrada,atendimento_cliente,travamento_multitarefa,52,95,60,ram,aumentar RAM para 16GB
+27,desktop_escritorio,antiga,2,4,SSD_SATA,integrada,atendimento_cliente,travamento_multitarefa,46,96,55,ram,aumentar RAM para 8GB
+28,desktop_escritorio,intermediaria,4,8,HDD,integrada,atendimento_cliente,lentidao_geral,55,93,84,ram,aumentar RAM para 16GB
+29,servidor,intermediaria,16,64,SSD_SATA,integrada,virtualizacao_vdi,contencao_maquina_virtual,65,96,60,ram,aumentar RAM do host para 128GB
+30,servidor,recente,16,64,SSD_NVMe,integrada,virtualizacao_vdi,contencao_maquina_virtual,60,97,45,ram,aumentar RAM do host para 128GB
+31,servidor,intermediaria,8,32,SSD_SATA,integrada,virtualizacao_vdi,contencao_maquina_virtual,68,95,58,ram,aumentar RAM do host para 64GB
+32,servidor,recente,24,128,SSD_NVMe,integrada,virtualizacao_vdi,contencao_maquina_virtual,62,94,40,ram,aumentar RAM do host para 256GB
+33,maquina_virtual,intermediaria,4,8,SSD_SATA,integrada,virtualizacao_vdi,travamento_multitarefa,58,96,52,ram,aumentar memoria alocada da VM
+34,notebook_corporativo,recente,8,8,SSD_NVMe,integrada,desenvolvimento_software,travamento_multitarefa,60,97,45,ram,aumentar RAM para 16GB
+35,estacao_trabalho,recente,8,16,SSD_NVMe,dedicada_baixa,desenvolvimento_software,travamento_multitarefa,62,95,42,ram,aumentar RAM para 32GB
+36,notebook_corporativo,intermediaria,4,8,SSD_SATA,integrada,desenvolvimento_software,lentidao_programas_pesados,65,96,50,ram,aumentar RAM para 16GB
+37,estacao_trabalho,recente,8,16,SSD_NVMe,dedicada_media,ciencia_de_dados_ml,treinamento_modelo_lento,70,97,48,ram,aumentar RAM para 64GB
+38,servidor,recente,16,32,SSD_NVMe,dedicada_media,ciencia_de_dados_ml,lentidao_programas_pesados,66,98,50,ram,aumentar RAM para 128GB
+39,servidor,intermediaria,8,16,SSD_SATA,integrada,banco_de_dados,consulta_bd_lenta,58,97,65,ram,aumentar RAM do servidor para 64GB
+40,maquina_virtual,recente,8,16,SSD_NVMe,integrada,banco_de_dados,consulta_bd_lenta,55,95,60,ram,aumentar memoria alocada da VM
+41,notebook_corporativo,intermediaria,4,16,SSD_SATA,integrada,desenvolvimento_software,lentidao_programas_pesados,92,75,40,cpu,migrar para CPU recente com mais nucleos
+42,estacao_trabalho,antiga,4,16,SSD_SATA,dedicada_baixa,desenvolvimento_software,lentidao_programas_pesados,95,70,38,cpu,migrar para CPU recente com mais nucleos
+43,notebook_corporativo,intermediaria,4,16,SSD_NVMe,integrada,desenvolvimento_software,lentidao_programas_pesados,90,72,35,cpu,migrar para notebook com CPU recente
+44,estacao_trabalho,intermediaria,6,32,SSD_NVMe,dedicada_baixa,desenvolvimento_software,lentidao_programas_pesados,93,68,32,cpu,migrar para CPU com mais nucleos
+45,notebook_corporativo,antiga,2,8,SSD_SATA,integrada,desenvolvimento_software,lentidao_programas_pesados,96,78,42,cpu,migrar para notebook com CPU recente
+46,servidor,antiga,4,16,SSD_SATA,integrada,servidor_aplicacao_web,timeout_aplicacao_web,95,70,35,cpu,trocar por servidor com CPU recente
+47,servidor,intermediaria,8,32,SSD_SATA,integrada,servidor_aplicacao_web,timeout_aplicacao_web,92,65,30,cpu,adicionar nucleos ou escalar horizontalmente
+48,maquina_virtual,intermediaria,2,8,SSD_SATA,integrada,servidor_aplicacao_web,timeout_aplicacao_web,97,72,38,cpu,aumentar vCPUs da maquina virtual
+49,maquina_virtual,recente,4,16,SSD_NVMe,integrada,servidor_aplicacao_web,timeout_aplicacao_web,94,68,28,cpu,aumentar vCPUs da maquina virtual
+50,servidor,antiga,8,32,HDD,integrada,servidor_aplicacao_web,lentidao_geral,90,74,55,cpu,trocar por servidor com CPU recente
+51,desktop_escritorio,antiga,4,8,SSD_SATA,integrada,financeiro_erp,relatorio_erp_lento,94,76,45,cpu,migrar para CPU recente
+52,desktop_escritorio,intermediaria,4,16,SSD_SATA,integrada,financeiro_erp,relatorio_erp_lento,91,70,40,cpu,migrar para CPU recente com mais nucleos
+53,notebook_corporativo,antiga,4,8,SSD_SATA,integrada,financeiro_erp,relatorio_erp_lento,95,74,42,cpu,migrar para notebook com CPU recente
+54,desktop_escritorio,intermediaria,6,16,SSD_NVMe,integrada,financeiro_erp,relatorio_erp_lento,89,66,35,cpu,migrar para CPU recente com mais nucleos
+55,servidor,antiga,8,64,SSD_SATA,integrada,virtualizacao_vdi,contencao_maquina_virtual,96,78,45,cpu,trocar host por CPU com mais nucleos
+56,servidor,intermediaria,16,128,SSD_NVMe,integrada,virtualizacao_vdi,contencao_maquina_virtual,93,72,38,cpu,adicionar host ao cluster de virtualizacao
+57,estacao_trabalho,intermediaria,6,32,SSD_NVMe,dedicada_media,engenharia_cad,renderizacao_cad_lenta,95,70,30,cpu,migrar para CPU recente com mais nucleos
+58,estacao_trabalho,antiga,8,32,SSD_SATA,dedicada_media,engenharia_cad,renderizacao_cad_lenta,97,74,35,cpu,migrar para CPU recente com mais nucleos
+59,servidor,intermediaria,8,64,SSD_NVMe,integrada,banco_de_dados,consulta_bd_lenta,94,72,40,cpu,trocar por servidor com CPU recente
+60,servidor,antiga,8,32,SSD_SATA,integrada,banco_de_dados,consulta_bd_lenta,96,75,48,cpu,trocar por servidor com CPU recente
+61,estacao_trabalho,intermediaria,6,16,SSD_SATA,integrada,engenharia_cad,renderizacao_cad_lenta,55,65,30,gpu,instalar GPU dedicada intermediaria
+62,estacao_trabalho,recente,8,32,SSD_NVMe,dedicada_baixa,engenharia_cad,renderizacao_cad_lenta,50,60,25,gpu,trocar por GPU dedicada de alto desempenho
+63,estacao_trabalho,intermediaria,8,32,SSD_NVMe,dedicada_baixa,engenharia_cad,renderizacao_cad_lenta,58,62,28,gpu,trocar por GPU com mais VRAM
+64,notebook_corporativo,recente,8,16,SSD_NVMe,integrada,engenharia_cad,renderizacao_cad_lenta,60,68,30,gpu,migrar para estacao com GPU dedicada
+65,estacao_trabalho,recente,8,32,SSD_NVMe,dedicada_media,engenharia_cad,renderizacao_cad_lenta,52,58,22,gpu,trocar por GPU dedicada de alto desempenho
+66,estacao_trabalho,antiga,4,16,SSD_SATA,dedicada_baixa,engenharia_cad,renderizacao_cad_lenta,62,66,35,gpu,trocar por GPU dedicada intermediaria
+67,estacao_trabalho,intermediaria,6,32,SSD_NVMe,integrada,engenharia_cad,renderizacao_cad_lenta,57,64,26,gpu,instalar GPU dedicada intermediaria
+68,estacao_trabalho,recente,12,64,SSD_NVMe,dedicada_media,engenharia_cad,renderizacao_cad_lenta,48,55,20,gpu,trocar por GPU profissional de alto desempenho
+69,estacao_trabalho,intermediaria,6,16,SSD_SATA,dedicada_baixa,design_grafico_marketing,exportacao_video_lenta,60,70,35,gpu,trocar por GPU com mais VRAM
+70,notebook_corporativo,recente,8,16,SSD_NVMe,integrada,design_grafico_marketing,exportacao_video_lenta,65,72,32,gpu,migrar para estacao com GPU dedicada
+71,estacao_trabalho,recente,8,32,SSD_NVMe,dedicada_baixa,design_grafico_marketing,exportacao_video_lenta,55,62,28,gpu,trocar por GPU dedicada de alto desempenho
+72,estacao_trabalho,intermediaria,8,32,SSD_SATA,dedicada_media,design_grafico_marketing,exportacao_video_lenta,58,65,30,gpu,trocar por GPU dedicada de alto desempenho
+73,notebook_corporativo,intermediaria,4,16,SSD_SATA,integrada,design_grafico_marketing,exportacao_video_lenta,68,74,36,gpu,migrar para notebook com GPU dedicada
+74,estacao_trabalho,recente,12,32,SSD_NVMe,dedicada_baixa,design_grafico_marketing,exportacao_video_lenta,50,60,25,gpu,trocar por GPU com mais VRAM
+75,estacao_trabalho,recente,8,32,SSD_NVMe,integrada,ciencia_de_dados_ml,treinamento_modelo_lento,66,70,30,gpu,instalar GPU dedicada de alto desempenho
+76,servidor,recente,16,64,SSD_NVMe,dedicada_baixa,ciencia_de_dados_ml,treinamento_modelo_lento,55,65,28,gpu,trocar por GPU de datacenter com mais VRAM
+77,estacao_trabalho,intermediaria,8,32,SSD_SATA,dedicada_baixa,ciencia_de_dados_ml,treinamento_modelo_lento,60,68,32,gpu,trocar por GPU dedicada de alto desempenho
+78,estacao_trabalho,recente,12,64,SSD_NVMe,dedicada_media,ciencia_de_dados_ml,treinamento_modelo_lento,52,62,24,gpu,trocar por GPU de alto desempenho com mais VRAM
+79,servidor,intermediaria,16,128,SSD_SATA,integrada,ciencia_de_dados_ml,treinamento_modelo_lento,64,72,30,gpu,instalar GPU de datacenter
+80,notebook_corporativo,recente,8,32,SSD_NVMe,dedicada_baixa,ciencia_de_dados_ml,treinamento_modelo_lento,58,66,26,gpu,migrar para estacao com GPU de alto desempenho
