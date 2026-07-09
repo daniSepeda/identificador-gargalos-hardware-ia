@@ -62,6 +62,30 @@ Não existe dataset público com o rótulo "gargalo de hardware" pronto. A base 
 
 O detalhamento completo está no `CHANGELOG.md` e no PRD.
 
+## 📊 Resultados
+
+Avaliação por **validação leave-one-out** (cada caso é retirado da base e classificado pelos 79 restantes), a mesma métrica usada na Entrega 2:
+
+| k (vizinhos) | Acurácia |
+|---|---|
+| 1 | 83,8% |
+| **3** | **80,0%** ✅ (critério do PRD: ≥ 75%) |
+| 5 | 80,0% |
+| 7 | 76,2% |
+
+Métricas por classe de gargalo (k=3), com a base agora **perfeitamente balanceada** (20 casos por classe):
+
+| Gargalo | Precisão | Revocação | F1 |
+|---|---|---|---|
+| armazenamento | 0,76 | 0,80 | 0,78 |
+| cpu | 0,82 | 0,70 | 0,76 |
+| gpu | 0,80 | 1,00 | 0,89 |
+| ram | 0,82 | 0,70 | 0,76 |
+
+- A migração para o contexto corporativo **manteve os 80% de acurácia** da Entrega 2, agora com o **dobro de casos** (80 vs 40) e classes balanceadas (contra 14×7 na base antiga);
+- A classe **`gpu` acerta 100%** dos casos (revocação 1,00), refletindo o padrão causa-efeito espelhado do dataset de FPS (carga gráfica + GPU insuficiente → gargalo de GPU), transplantado para CAD, design e ML;
+- Os **erros se concentram nos casos deliberadamente ambíguos** (ex.: `consulta_bd_lenta`, que pode ser disco, RAM ou CPU), em que sintomas idênticos só se distinguem pela telemetria — exatamente o comportamento esperado de um sistema RBC.
+
 ## ▶️ Como executar
 
 ### Google Colab (recomendado — sem instalar nada)
