@@ -1,5 +1,6 @@
 from __future__ import annotations
 import streamlit as st
+import plotly.express as px
 from modelo_ia import HardwareRecommender
 
 st.set_page_config(
@@ -15,6 +16,27 @@ def carregar_modelo() -> HardwareRecommender:
 
 def formatar_opcao(valor: str) -> str:
     return valor.replace("_", " ").capitalize()
+
+
+def grafico_pizza_distribuicao(dados, coluna_categoria: str):
+    dados_grafico = dados.copy()
+    dados_grafico["rotulo"] = dados_grafico[coluna_categoria].map(formatar_opcao)
+    figura = px.pie(
+        dados_grafico,
+        names="rotulo",
+        values="quantidade",
+        color_discrete_sequence=px.colors.qualitative.Set2,
+    )
+    figura.update_traces(
+        textinfo="percent+label",
+        textposition="inside",
+        hovertemplate="%{label}<br>Casos: %{value}<br>%{percent}<extra></extra>",
+    )
+    figura.update_layout(
+        margin=dict(t=30, b=30, l=30, r=30),
+        legend_title_text="",
+    )
+    return figura
 
 
 def renderizar_formulario(modelo: HardwareRecommender) -> tuple[bool, dict[str, int | str], int]:
@@ -75,7 +97,7 @@ def mostrar_resultado(modelo: HardwareRecommender, caso: dict[str, int | str], k
     ]
     st.dataframe(
         resultado.semelhantes[colunas].reset_index(drop=True),
-        use_container_width=True,
+        width="stretch",
         hide_index=True,
     )
 
@@ -86,8 +108,8 @@ def main() -> None:
 
     st.title("Identificador de Gargalos e Recomendador de Upgrades")
     st.caption(
-        "Interface Streamlit baseada no notebook do projeto para analisar sintomas, "
-        "identificar o gargalo mais provável e sugerir upgrades."
+        "Interface gráfica para entrada de novos casos, "
+        "focada em identificar o gargalo mais provável e sugerir upgrades."
     )
 
     col1, col2, col3 = st.columns(3)
@@ -108,10 +130,18 @@ def main() -> None:
         g1, g2 = st.columns(2)
         with g1:
             st.markdown("**Distribuição de gargalos**")
-            st.bar_chart(modelo.distribuicao_gargalos())
+            gargalos = modelo.distribuicao_gargalos()
+            st.plotly_chart(
+                grafico_pizza_distribuicao(gargalos, "gargalo"),
+                width="stretch",
+            )
         with g2:
             st.markdown("**Sintomas mais frequentes**")
-            st.bar_chart(modelo.distribuicao_sintomas())
+            sintomas = modelo.distribuicao_sintomas()
+            st.plotly_chart(
+                grafico_pizza_distribuicao(sintomas, "sintoma_principal"),
+                width="stretch",
+            )
 
         st.subheader("Tabela completa da base")
         filtro_gargalo = st.multiselect("Filtrar por gargalo", metricas["gargalos"])
@@ -119,7 +149,7 @@ def main() -> None:
         if filtro_gargalo:
             base = base[base["gargalo"].isin(filtro_gargalo)]
 
-        st.dataframe(base, use_container_width=True, hide_index=True)
+        st.dataframe(base, width="stretch", hide_index=True)
         st.download_button(
             "Baixar base filtrada em CSV",
             data=base.to_csv(index=False).encode("utf-8"),
