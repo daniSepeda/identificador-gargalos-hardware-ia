@@ -155,6 +155,9 @@ class HardwareRecommender:
             .rename_axis("sintoma_principal")
             .reset_index(name="quantidade")
         )
+    
+    def distribuicao_gargalos_maquina(self) ->pd.DataFrame:
+        return self.casos.groupby(["tipo_maquina", "gargalo"]).size().reset_index(name="quantidade")
 
     def metricas_resumo(self) -> dict[str, Any]:
         return {
