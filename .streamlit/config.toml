@@ -1,4 +1,8 @@
 [theme]
 base = "light"
-codeFontSize = "16px" 
-
+primaryColor = "#0a9e80"
+backgroundColor = "#ffffff"
+secondaryBackgroundColor = "#f1f5f9"
+textColor = "#0f172a"
+font = "sans serif"
+codeFontSize = "16px"

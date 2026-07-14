@@ -29,9 +29,15 @@ def aplicar_estilo_visual():
     }
     
     .subtitle {
-        color: #777;
+        color: #8892a8;
         font-size: 1.2rem !important;
-        padding-bottom: 0 20px 0 0;                
+        padding: 0 20px 0 0;
+    }
+
+    .brand {
+        font-size: 1.4rem;
+        font-weight: 700;
+        letter-spacing: .02em;
     }
     </style>
 """, unsafe_allow_html=True)

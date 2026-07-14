@@ -3,7 +3,10 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 import pandas as pd
+from sklearn.metrics import accuracy_score
+from sklearn.model_selection import LeaveOneOut, cross_val_predict
 from sklearn.neighbors import KNeighborsClassifier, NearestNeighbors
+from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import MinMaxScaler
 
 @dataclass(frozen=True)
@@ -11,6 +14,19 @@ class RecomendacaoResultado:
     gargalo: str
     solucao: str
     semelhantes: pd.DataFrame
+    confianca: float = 0.0
+
+
+@dataclass(frozen=True)
+class RevisaoResultado:
+    """Saida da etapa Revise: o diagnostico final apos confirmacao/correcao do especialista."""
+
+    gargalo_final: str
+    solucao_final: str
+    gargalo_sugerido: str
+    solucao_sugerida: str
+    revisado: bool
+    confianca: float
 
 
 class HardwareRecommender:
@@ -89,24 +105,21 @@ class HardwareRecommender:
         self.data_path = Path(data_path) if data_path else base_dir / "data" / "base_casos_corporativa_v1.csv"
         self.k = k
         self.casos = pd.read_csv(self.data_path)
-        self._categorias_modelo = self._extrair_categorias(self.casos)
-        self.CATEGORIAS = {
-            **self._categorias_modelo,
-            "perfil_uso": self._categorias_modelo["perfil_carga"],
+        # Vetorizacao ancorada nos dominios fechados do PRD (nao nos valores presentes na base):
+        # assim as colunas one-hot ficam estaveis mesmo depois que o Retain injeta novos casos.
+        self._categorias_modelo = {
+            coluna: list(self.CATEGORIAS[coluna]) for coluna in self.COLUNAS_CATEGORICAS
         }
+        self._acuracia_loo: float | None = None
+        self._reajustar()
+
+    def _reajustar(self) -> None:
+        """(Re)treina o modelo a partir de self.casos. Chamado no init e apos cada Retain."""
         self._x_bruto = self._vetorizar(self.casos)
         self.normalizador = MinMaxScaler().fit(self._x_bruto)
         self.x = self.normalizador.transform(self._x_bruto)
         self.modelo_knn = NearestNeighbors(n_neighbors=self.k, metric="euclidean").fit(self.x)
-        self.classificador = KNeighborsClassifier(n_neighbors=self.k, metric="euclidean").fit(
-            self.x, self.casos["gargalo"]
-        )
-
-    def _extrair_categorias(self, df: pd.DataFrame) -> dict[str, list[Any]]:
-        return {
-            coluna: df[coluna].dropna().drop_duplicates().tolist()
-            for coluna in self.COLUNAS_CATEGORICAS
-        }
+        self._acuracia_loo = None
 
     def _normalizar_entrada(self, df: pd.DataFrame) -> pd.DataFrame:
         normalizado = df.copy()
@@ -137,13 +150,78 @@ class HardwareRecommender:
         distancias, indices = self.modelo_knn.kneighbors(vetor, n_neighbors=vizinhos)
         semelhantes = self.casos.iloc[indices[0]].copy()
         semelhantes["distancia"] = distancias[0].round(3)
+        # Similaridade legivel para o usuario: 1/(1+distancia) -> 1.0 (identico) a 0.0 (distante).
+        semelhantes["similaridade"] = 1.0 / (1.0 + distancias[0])
         return semelhantes
 
     def recomendar_upgrade(self, caso_novo: dict[str, Any], k: int | None = None) -> RecomendacaoResultado:
+        """Ciclo Retrieve + Reuse: recupera os vizinhos e adapta a solucao por votacao majoritaria."""
         semelhantes = self.recuperar_casos(caso_novo, k=k)
         gargalo = semelhantes["gargalo"].mode()[0]
         solucao = semelhantes[semelhantes["gargalo"] == gargalo].iloc[0]["solucao_recomendada"]
-        return RecomendacaoResultado(gargalo=gargalo, solucao=solucao, semelhantes=semelhantes)
+        # Confianca = fracao dos vizinhos que concordam com o gargalo escolhido (0 a 1).
+        confianca = float((semelhantes["gargalo"] == gargalo).mean())
+        return RecomendacaoResultado(
+            gargalo=gargalo, solucao=solucao, semelhantes=semelhantes, confianca=confianca
+        )
+
+    def revisar(
+        self,
+        resultado: RecomendacaoResultado,
+        gargalo_correto: str | None = None,
+        solucao_correta: str | None = None,
+    ) -> RevisaoResultado:
+        """Etapa Revise: um especialista confirma ou corrige a sugestao do ciclo Retrieve+Reuse.
+
+        Sem feedback (`gargalo_correto=None`), a sugestao e aceita como esta. Com feedback que
+        diverge da sugestao, o diagnostico e corrigido e a solucao adaptada — a informada pelo
+        especialista ou, na ausencia, a mais frequente da base para o gargalo corrigido.
+        """
+        sugerido, solucao_sugerida = resultado.gargalo, resultado.solucao
+        if gargalo_correto is None or gargalo_correto == sugerido:
+            return RevisaoResultado(
+                gargalo_final=sugerido,
+                solucao_final=solucao_correta or solucao_sugerida,
+                gargalo_sugerido=sugerido,
+                solucao_sugerida=solucao_sugerida,
+                revisado=False,
+                confianca=resultado.confianca,
+            )
+        if solucao_correta is None:
+            candidatos = self.casos.loc[self.casos["gargalo"] == gargalo_correto, "solucao_recomendada"]
+            solucao_correta = candidatos.mode()[0] if not candidatos.empty else solucao_sugerida
+        return RevisaoResultado(
+            gargalo_final=gargalo_correto,
+            solucao_final=solucao_correta,
+            gargalo_sugerido=sugerido,
+            solucao_sugerida=solucao_sugerida,
+            revisado=True,
+            confianca=resultado.confianca,
+        )
+
+    def reter_caso(
+        self,
+        caso_novo: dict[str, Any],
+        gargalo: str,
+        solucao: str,
+        persistir: bool = False,
+    ) -> int:
+        """Etapa Retain: incorpora um caso ja resolvido/confirmado a base e reajusta o modelo.
+
+        Devolve o `id_caso` atribuido. Com `persistir=True`, grava a base atualizada em disco
+        (a proxima execucao ja nasce com o caso aprendido).
+        """
+        registro = dict(caso_novo)
+        if "perfil_carga" not in registro and "perfil_uso" in registro:
+            registro["perfil_carga"] = registro.pop("perfil_uso")
+        novo_id = int(self.casos["id_caso"].max()) + 1 if len(self.casos) else 1
+        registro.update({"id_caso": novo_id, "gargalo": gargalo, "solucao_recomendada": solucao})
+        linha = {coluna: registro.get(coluna) for coluna in self.casos.columns}
+        self.casos = pd.concat([self.casos, pd.DataFrame([linha])], ignore_index=True)
+        self._reajustar()
+        if persistir:
+            self.casos.to_csv(self.data_path, index=False)
+        return novo_id
 
     def distribuicao_gargalos(self) -> pd.DataFrame:
         return self.casos["gargalo"].value_counts().rename_axis("gargalo").reset_index(name="quantidade")
@@ -159,10 +237,30 @@ class HardwareRecommender:
     def distribuicao_gargalos_maquina(self) ->pd.DataFrame:
         return self.casos.groupby(["tipo_maquina", "gargalo"]).size().reset_index(name="quantidade")
 
+    def acuracia_leave_one_out(self) -> float:
+        """Acuracia honesta por validacao leave-one-out.
+
+        Cada caso e retirado da base e classificado pelos demais. O MinMaxScaler entra num
+        Pipeline para reajustar dentro de cada dobra, evitando o vazamento de dados que ocorre
+        ao normalizar a base inteira antes da validacao.
+        """
+        if self._acuracia_loo is None:
+            pipeline = Pipeline(
+                [
+                    ("normalizador", MinMaxScaler()),
+                    ("knn", KNeighborsClassifier(n_neighbors=self.k, metric="euclidean")),
+                ]
+            )
+            previsoes = cross_val_predict(
+                pipeline, self._x_bruto, self.casos["gargalo"], cv=LeaveOneOut()
+            )
+            self._acuracia_loo = float(accuracy_score(self.casos["gargalo"], previsoes))
+        return self._acuracia_loo
+
     def metricas_resumo(self) -> dict[str, Any]:
         return {
             "total_casos": len(self.casos),
             "total_atributos": self.x.shape[1],
-            "acuracia_treino": self.classificador.score(self.x, self.casos["gargalo"]),
+            "acuracia_loo": self.acuracia_leave_one_out(),
             "gargalos": sorted(self.casos["gargalo"].unique().tolist()),
         }

@@ -1,11 +1,7 @@
 import streamlit as st
-from components.custom_style import aplicar_estilo_visual
 from utils.formatar_opcao import formatar_opcao
+from utils.modelo import carregar_modelo
 from modelo_ia import HardwareRecommender
-
-@st.cache_resource
-def carregar_modelo() -> HardwareRecommender:
-    return HardwareRecommender()
 
 
 def renderizar_formulario(modelo: HardwareRecommender) -> tuple[bool, dict[str, int | str], int]:
@@ -50,6 +46,7 @@ def renderizar_formulario(modelo: HardwareRecommender) -> tuple[bool, dict[str, 
 
 
 def mostrar_resultado(modelo: HardwareRecommender, caso: dict[str, int | str], k: int) -> None:
+    # Etapas Retrieve + Reuse.
     resultado = modelo.recomendar_upgrade(caso, k=k)
     r1, r2 = st.columns(2)
     r1.success(f"Gargalo mais provável: **{resultado.gargalo.upper()}**")
@@ -62,20 +59,39 @@ def mostrar_resultado(modelo: HardwareRecommender, caso: dict[str, int | str], k
         "sintoma_principal",
         "gargalo",
         "solucao_recomendada",
-        "distancia",
+        "similaridade",
     ]
+    tabela = resultado.semelhantes[colunas].reset_index(drop=True)
+    tabela["similaridade"] = tabela["similaridade"] * 100
     st.dataframe(
-        resultado.semelhantes[colunas].reset_index(drop=True),
+        tabela,
         width="stretch",
         hide_index=True,
+        column_config={
+            "similaridade": st.column_config.ProgressColumn(
+                "Similaridade",
+                help="Quão parecido é o caso histórico com a máquina analisada (1 / (1 + distância)).",
+                format="%.0f%%",
+                min_value=0,
+                max_value=100,
+            ),
+        },
+    )
+
+    # Etapas Revise + Retain executadas nos bastidores (sem expor o usuario ao ciclo RBC):
+    # a sugestao e confirmada e o caso e incorporado a base para uso futuro.
+    revisao = modelo.revisar(resultado)
+    novo_id = modelo.reter_caso(caso, gargalo=revisao.gargalo_final, solucao=revisao.solucao_final)
+    st.caption(
+        f"✅ Esta entrada foi adicionada à base de casos "
+        f"(caso #{novo_id} — base agora com {len(modelo.casos)} casos)."
     )
 
 
 modelo = carregar_modelo()
-aplicar_estilo_visual()
 
 st.markdown("""
-        <h1 class='title'> Identificador de Gargalos e Recomendador de Upgrades </h1>
+        <h1 class='title'>🖥️ Identificador de Gargalos e Recomendador de Upgrades </h1>
         <p class='subtitle'>
             Interface gráfica para entrada de novos casos,focada em identificar o gargalo mais provável e sugerir upgrades.
         </p>

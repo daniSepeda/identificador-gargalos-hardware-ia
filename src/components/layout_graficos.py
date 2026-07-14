@@ -10,6 +10,7 @@ CORES_GRAFICO = [
     "#22d3ee",
 ]
 
+# Cor fixa por gargalo, reutilizada em todos os graficos e no card de resultado.
 CORES_BARRAS = {
     "armazenamento": "#38bdf8",
     "ram": "#34d399",
@@ -21,10 +22,15 @@ CORES_BARRAS = {
 def grafico_barra_empilhado(dados, *, x, y, group):
     dados_grafico = dados.copy()
     dados_grafico["x_formatado"] = dados_grafico[x].map(formatar_opcao)
-    
+
     figura = px.bar(dados_grafico, x="x_formatado", y=y, color=group, color_discrete_map=CORES_BARRAS)
 
     figura.update_layout(
+        template="plotly_white",
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        font=dict(color="#0f172a"),
+        xaxis_title=None,
         margin=dict(r=120),
         bargap=0.5,
         legend=dict(
@@ -37,14 +43,19 @@ def grafico_barra_empilhado(dados, *, x, y, group):
 
     return figura
 
-def grafico_pizza_distribuicao(dados, coluna_categoria: str):
+def grafico_pizza_distribuicao(dados, coluna_categoria: str, mapa_cores: dict | None = None):
     dados_grafico = dados.copy()
     dados_grafico["rotulo"] = dados_grafico[coluna_categoria].map(formatar_opcao)
+    if mapa_cores:
+        cores = {formatar_opcao(chave): valor for chave, valor in mapa_cores.items()}
+        argumentos_cor = dict(color="rotulo", color_discrete_map=cores)
+    else:
+        argumentos_cor = dict(color_discrete_sequence=CORES_GRAFICO)
     figura = px.pie(
         dados_grafico,
         names="rotulo",
         values="quantidade",
-        color_discrete_sequence=CORES_GRAFICO,
+        **argumentos_cor,
     )
     figura.update_traces(
         textinfo="percent+label",
@@ -54,11 +65,11 @@ def grafico_pizza_distribuicao(dados, coluna_categoria: str):
         hovertemplate="%{label}<br>Casos: %{value}<br>%{percent}<extra></extra>",
     )
     figura.update_layout(
-        template="plotly_dark",
+        template="plotly_white",
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
-        font=dict(size=15, color="#e5edf7"),
-        hoverlabel=dict(bgcolor="#111827", font_size=15, font_color="#f8fafc"),
+        font=dict(size=15, color="#0f172a"),
+        hoverlabel=dict(bgcolor="#0f172a", font_size=15, font_color="#f8fafc"),
         margin=dict(t=34, b=34, l=24, r=24),
         legend_title_text="",
         legend=dict(font=dict(size=15), orientation="h", y=-0.08, x=0.5, xanchor="center"),

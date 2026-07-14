@@ -15,7 +15,14 @@ Criar um sistema baseado em **Raciocínio Baseado em Casos (RBC)** capaz de iden
 
 ## 🧠 Abordagem Técnica
 
-O projeto utiliza uma base de casos históricos com exemplos de computadores, sintomas observados, componentes instalados e solução adotada. Para cada novo caso, o sistema calcula a similaridade com registros anteriores usando **K-Nearest Neighbors (KNN)** com distância euclidiana, recupera os casos mais próximos (*Retrieve*) e adapta a recomendação para a máquina analisada (*Reuse*).
+O projeto utiliza uma base de casos históricos com exemplos de computadores, sintomas observados, componentes instalados e solução adotada. Para cada novo caso, o sistema calcula a similaridade com registros anteriores usando **K-Nearest Neighbors (KNN)** com distância euclidiana.
+
+O **ciclo RBC completo (4 R)** está implementado — tanto no notebook quanto em `src/modelo_ia/servico.py`:
+
+- **Retrieve** — recupera os casos mais próximos do caso analisado (KNN);
+- **Reuse** — diagnostica o gargalo por votação majoritária dos vizinhos e adapta a solução, com uma **confiança** (fração de vizinhos que concordam com o diagnóstico);
+- **Revise** — um especialista confirma ou corrige o diagnóstico sugerido; a confiança sinaliza quando desconfiar (baixa concordância → revisar);
+- **Retain** — o caso resolvido é incorporado à base e o modelo é reajustado, de modo que o sistema **aprende** a cada novo caso atendido.
 
 ## 📁 Entregas
 
@@ -35,6 +42,7 @@ O projeto utiliza uma base de casos históricos com exemplos de computadores, si
 - `data/base_casos_corporativa_v1.csv`: **nova base oficial** — 80 casos corporativos, balanceados em 20 casos por classe de gargalo (cpu, ram, gpu, armazenamento). Substitui a antiga base doméstica/gamer da Entrega 2 como base usada pelo notebook.
 - `notebooks/checkpoint_experimentos.ipynb`: notebook atualizado para a base corporativa, com validação de domínios (correção do bug de categoria não vista), métricas por classe e análise dos erros.
 - `CHANGELOG.md`: diferenças detalhadas entre a base corporativa e a base original.
+- **Ciclo RBC completo**: as etapas *Revise* e *Retain* foram implementadas no `src/modelo_ia/servico.py` e no notebook, com uma avaliação de **aprendizado incremental** que mede o ganho do *Retain* (ver Resultados).
 - Resultado: **acurácia leave-one-out de 80% com k=3** (mesmo baseline da Entrega 2, agora com o dobro de casos e classes perfeitamente balanceadas).
 
 ## 🗃️ De onde veio a base corporativa (fontes espelhadas)
@@ -85,6 +93,18 @@ Métricas por classe de gargalo (k=3), com a base agora **perfeitamente balancea
 - A migração para o contexto corporativo **manteve os 80% de acurácia** da Entrega 2, agora com o **dobro de casos** (80 vs 40) e classes balanceadas (contra 14×7 na base antiga);
 - A classe **`gpu` acerta 100%** dos casos (revocação 1,00), refletindo o padrão causa-efeito espelhado do dataset de FPS (carga gráfica + GPU insuficiente → gargalo de GPU), transplantado para CAD, design e ML;
 - Os **erros se concentram nos casos deliberadamente ambíguos** (ex.: `consulta_bd_lenta`, que pode ser disco, RAM ou CPU), em que sintomas idênticos só se distinguem pela telemetria — exatamente o comportamento esperado de um sistema RBC.
+
+### Aprendizado incremental — avaliação do *Retain*
+
+Os 80% acima medem o *Retrieve*/*Reuse* na base completa. Para medir o valor do **Retain** (a capacidade de aprender), rodamos um experimento de **aprendizado incremental (*test-then-train*)**: partindo de uma semente de 24 casos (6 por gargalo), os 56 casos restantes são apresentados **um a um** — cada caso é diagnosticado, revisado com o rótulo real e só então retido na base. Comparamos com um controle em que a base fica **congelada**.
+
+| Condição | Acurácia no fluxo (56 casos) | 1ª metade → 2ª metade |
+|---|---|---|
+| Sem *Retain* (base congelada em 24) | 67,9% | 67,9% → 67,9% |
+| **Com *Retain*** (base cresce 24 → 80) | **80,4%** | 75,0% → **85,7%** |
+
+- Ligar o *Retain* eleva a acurácia no fluxo em **+12,5 pontos** (ganho médio consistente em 5 sementes: **62,1% → 74,6%**);
+- Com a base **congelada**, a acurácia é **plana** (67,9% nas duas metades); com *Retain*, ela **sobe ao longo do fluxo** (75,0% → 85,7%) conforme a base cresce — evidência direta de que o sistema **aprende ao reter casos**.
 
 ## ▶️ Como executar
 
