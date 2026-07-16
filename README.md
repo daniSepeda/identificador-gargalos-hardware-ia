@@ -126,3 +126,7 @@ Clique no badge acima e, no Colab, use **Ambiente de execução → Executar tud
 pip install -r requirements.txt
 jupyter notebook notebooks/checkpoint_experimentos.ipynb
 ```
+
+## Dashboard 
+
+https://identificador-gargalos-hardware-ia-unifap.streamlit.app/
