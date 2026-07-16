@@ -112,7 +112,13 @@ Os 80% acima medem o *Retrieve*/*Reuse* na base completa. Para medir o valor do 
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/daniSepeda/identificador-gargalos-hardware-ia/blob/main/notebooks/checkpoint_experimentos.ipynb)
 
-Clique no badge acima e, no Colab, use **Ambiente de execução → Executar tudo**. O notebook baixa a base de casos corporativa automaticamente do GitHub.
+Clique no badge acima e, no Colab, use **Ambiente de execução → Executar tudo**. O notebook **clona este repositório inteiro** na sessão do Colab (base de casos, código de `src/` e documentação) e executa o projeto completo — sem instalar nada na sua máquina:
+
+| Seções | O que roda |
+|---|---|
+| 1 – 8 | O ciclo RBC passo a passo sobre `data/base_casos_corporativa_v1.csv`, com as avaliações do *Retain* e do *Retrieve + Reuse* |
+| 9 | O serviço `HardwareRecommender` (`src/modelo_ia/servico.py`), o mesmo que a interface web usa |
+| 10 | A **interface web Streamlit** (`src/app.py`), publicada com um endereço público temporário para abrir no navegador |
 
 ### Localmente
 
